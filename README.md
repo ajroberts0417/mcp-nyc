@@ -1,3 +1,19 @@
+# MCP NYC
+
+Hey Hackathon People!
+
+Here's how to get this working:
+1. `bun install` or `npm install`
+2. `bun run prepare` or `npm run prepare`
+3. `node build/index.js config --debug`
+
+Now restart your Claude app and it should be working.
+
+Am i still dxren? Hello
+HELLO
+
+
+
 # Shell MCP Server
 
 A Node.js implementation of the Model Context Protocol (MCP) that provides secure shell command execution capabilities. This server allows AI models to execute shell commands in a controlled environment with built-in security measures. Easily integrates with [Claude Desktop](https://claude.ai/download) for connecting Claude with your shell.
