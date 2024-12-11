@@ -60,7 +60,7 @@ class ShellServer {
   constructor() {
     this.server = new Server(
       {
-        name: 'shell-server',
+        name: 'mcp-nyc-server',
         version: '0.1.0',
       },
       { capabilities: { resources: {}, tools: {} } },
@@ -89,12 +89,12 @@ class ShellServer {
     this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
       tools: [
         {
-          name: 'run_command',
-          description: 'Run a shell command',
+          name: 'run_legistar_api',
+          description: 'Run a legistar api query',
           inputSchema: {
             type: 'object',
             properties: {
-              command: { type: 'string' },
+              legistar_intent: { type: 'string' },
             },
           },
         },
@@ -102,28 +102,13 @@ class ShellServer {
     }));
 
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
-      if (request.params.name !== 'run_command') {
+      if (request.params.name !== 'run_legistar_api') {
         throw new Error(`Unknown tool: ${request.params.name}`);
       }
 
-      const command = request.params.arguments?.command as string;
       try {
-        const baseCommand = command.trim().split(/\s+/)[0];
-        if (!(await commandExists(baseCommand))) {
-          throw new Error(`Command not found: ${baseCommand}`);
-        }
-
-        if (!validateCommand(baseCommand)) {
-          throw new Error(`Command not allowed: ${baseCommand}`);
-        }
-
-        const { stdout, stderr } = await execa(command, [], {
-          shell: true,
-          env: process.env,
-        });
-
         return {
-          content: [{ type: 'text', text: stdout || stderr, mimeType: 'text/plain' }],
+          content: [{ type: 'text', text: "this is a generic output for the legistar API", mimeType: 'text/plain' }],
         };
       } catch (error) {
         return {

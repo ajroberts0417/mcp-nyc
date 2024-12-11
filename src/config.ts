@@ -20,15 +20,15 @@ function getConfigPath() {
 }
 
 export function updateConfig(debug = false) {
-  const isNpx = Boolean(
-    process.argv[1].includes('/_npx/') ||
-      process.env.npm_command === 'exec' ||
-      process.env._?.includes('/_npx/'),
-  );
-  if (!isNpx && !debug) {
-    console.error({"error": 'Not running via npx'});
-    return;
-  }
+  // const isNpx = Boolean(
+  //   process.argv[1].includes('/_npx/') ||
+  //     process.env.npm_command === 'exec' ||
+  //     process.env._?.includes('/_npx/'),
+  // );
+  // if (!isNpx && !debug) {
+  //   console.error({"error": 'Not running via npx'});
+  //   return;
+  // }
 
   const scriptPath = process.argv[1];
   const configPath = getConfigPath();
@@ -51,7 +51,7 @@ export function updateConfig(debug = false) {
     } else {
       config.mcpServers['shell-server'] = {
         command: `${debug ? 'node' : 'npx'}`,
-        args: debug ? [scriptPath] : ['mcp-shell']
+        args: debug ? [scriptPath] : ['mcp-nyc']
       };
     }
 
