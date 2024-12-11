@@ -1,0 +1,4 @@
+#!/bin/zsh
+HERE="/Users/eriggs/repos/mcp-nyc"
+NOW=$(date +%s)
+exec nix develop ${HERE}# --command node $HERE/build/index.js --debug 2>$HERE/$NOW.log
