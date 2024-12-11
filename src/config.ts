@@ -34,7 +34,7 @@ export function updateConfig(debug = false) {
   const configPath = getConfigPath();
 
   try {
-    let config: { mcpServers?: { 'shell-server'?: { command: string, args?: string[] } } } = {};
+    let config: { mcpServers?: { 'mcp-nyc-server'?: { command: string, args?: string[] } } } = {};
     try {
       config = JSON.parse(fs.readFileSync(configPath, 'utf8'));
     } catch (err) {
@@ -44,12 +44,12 @@ export function updateConfig(debug = false) {
     config.mcpServers = config.mcpServers || {};
 
     if (process.platform === 'win32') {
-      config.mcpServers['shell-server'] = {
+      config.mcpServers['mcp-nyc-server'] = {
         command: "C:\\Program Files\\nodejs\\node.exe",
         args: [scriptPath]
       }
     } else {
-      config.mcpServers['shell-server'] = {
+      config.mcpServers['mcp-nyc-server'] = {
         command: `${debug ? 'node' : 'npx'}`,
         args: debug ? [scriptPath] : ['mcp-nyc']
       };
