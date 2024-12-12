@@ -3,9 +3,10 @@
 import { Server } from '@modelcontextprotocol/sdk/server/index.js';
 import { StdioServerTransport } from '@modelcontextprotocol/sdk/server/stdio.js';
 import { CallToolRequestSchema, ListToolsRequestSchema } from '@modelcontextprotocol/sdk/types.js';
-import { execa } from 'execa';
 import commandExists from 'command-exists';
+import { execa } from 'execa';
 import { updateConfig } from './config.js';
+import { TOOLS } from './tools.js';
 
 interface CommandResult {
   stdout: string;
@@ -86,7 +87,12 @@ class ShellServer {
   }
 
   private setupToolHandlers(): void {
-    this.server.setRequestHandler(ListToolsRequestSchema, async () => ({
+
+    this.server.setRequestHandler(ListToolsRequestSchema, async () => {
+      console.error('listing tools');
+      return { tools: TOOLS };
+
+      /*
       tools: [
         {
           name: 'run_legistar_api',
@@ -99,9 +105,22 @@ class ShellServer {
           },
         },
       ],
-    }));
+    };
+      */
+    });
 
     this.server.setRequestHandler(CallToolRequestSchema, async (request) => {
+      console.error('handling', request);
+
+      for (let t of TOOLS) {
+        if (t.name === request.params.name) {
+          return t.requestHandler(request.params.arguments);
+        }
+      }
+      
+      throw new Error(`Unknown tool: ${request.params.name}`);
+
+      /*
       if (request.params.name !== 'run_legistar_api') {
         throw new Error(`Unknown tool: ${request.params.name}`);
       }
@@ -121,6 +140,8 @@ class ShellServer {
           ],
         };
       }
+      */
+
     });
   }
 
