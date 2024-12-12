@@ -1,4 +1,4 @@
-import { queryCouncilMembers, queryLegistar } from "./legistar.js";
+import { queryCouncilMemberPositions, queryCouncilMembers, queryLegistar } from "./legistar.js";
 
 type ToolRequestHandlerOutput = {
   content: {
@@ -36,14 +36,18 @@ export const TOOLS: ToolSchema[] = [
 
 addTool({
   name: 'get_matters',
-  description: 'get current matters',
+  description: 'get matters (aka legislation, intros, bills, matters before the council).',
   inputSchema: {
     type: 'object',
-    properties: {},
+    properties: {
+      top: { type: 'string' },
+      skip: { type: 'string' },
+      year: {type: 'string'},
+      },
   },
-  async requestHandler(params) {
-    console.error("legister query???", params);
-    const data = await queryLegistar()
+  async requestHandler(req) {
+    console.error("legister query???", req);
+    const data = await queryLegistar(req.params.arguments)
     return {
       content: [{
         type: 'text',
@@ -78,3 +82,28 @@ addTool({
     };
   }
 });
+
+
+addTool({
+    name: 'get_council_member_positions',
+    description: 'Get committee positions for a specific council member',
+    inputSchema: {
+      type: 'object',
+      properties: {
+        top: { type: 'string' },
+        personId: { type: 'string' }
+      },
+    },
+    async requestHandler(req) {
+      console.error("legister query???", req);
+      const data = await queryCouncilMemberPositions(req.params.arguments);
+      return {
+        content: [{
+          type: 'text',
+          text: data,
+          mimeType: 'text/plain'
+        }],
+      };
+    }
+  });
+  
