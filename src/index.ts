@@ -114,7 +114,7 @@ class ShellServer {
 
       for (let t of TOOLS) {
         if (t.name === request.params.name) {
-          return t.requestHandler(request.params.arguments);
+          return t.requestHandler(request);
         }
       }
       
