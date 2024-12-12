@@ -106,6 +106,8 @@ class ShellServer {
         throw new Error(`Unknown tool: ${request.params.name}`);
       }
 
+      console.log(JSON.stringify(request.params))
+
       try {
         return {
           content: [{ type: 'text', text: "this is a generic output for the legistar API", mimeType: 'text/plain' }],

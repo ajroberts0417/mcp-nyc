@@ -6,6 +6,13 @@ type ToolRequestHandlerOutput = {
       mimeType: 'text/plain' | 'application/json';
     }[]
   }
+
+  type ToolRequest = {
+    params: {
+        name: string
+        arguments?: Record<string, unknown>
+    }
+  }
   
   type ToolSchema = {
       name: string;
@@ -16,14 +23,14 @@ type ToolRequestHandlerOutput = {
           command: { type: 'string' };
         };
       };
-      requestHandler: () => ToolRequestHandlerOutput;
+      requestHandler: (request: ToolRequest) => ToolRequestHandlerOutput;
     }
     
 
-// export function addTool(tool: ToolSchema){
-//     TOOLS.push(tool)
-// }
+export function addTool(tool: ToolSchema){
+    TOOLS.push(tool)
+}
 
-// export const TOOLS: ToolSchema[] = [
-//     requestHandler: () => {content: [{ type: 'text', text: "this is a generic output for the legistar API", mimeType: 'text/plain' }]},
-// ]
+export const TOOLS: ToolSchema[] = [
+
+]
