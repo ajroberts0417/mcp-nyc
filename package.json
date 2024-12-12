@@ -12,8 +12,10 @@
   "scripts": {
     "build": "tsc && node -e \"require('fs').chmodSync('build/index.js', '755')\"",
     "prepare": "npm run build",
+    "debug": "node build/index.js config --debug 2>./log.txt",
     "watch": "tsc --watch",
-    "inspector": "npx @modelcontextprotocol/inspector build/index.js"
+    "inspector": "npx @modelcontextprotocol/inspector build/index.js",
+    "taillogs": "tail -n 20 -f ~/Library/Logs/Claude/mcp*.log"
   },
   "author": "High Dimensional Research",
   "license": "MIT",
