@@ -1,3 +1,4 @@
+import { queryLegistar } from "./legistar.js";
 
 type ToolRequestHandlerOutput = {
     content: {
@@ -21,7 +22,7 @@ type ToolRequestHandlerOutput = {
         type: 'object';
         properties: Record<string, { type: 'string' }>; // other types are available, but i don't know what they are now.
       };
-      requestHandler: (request: ToolRequest) => ToolRequestHandlerOutput;
+      requestHandler: (request: ToolRequest) => Promise<ToolRequestHandlerOutput>;
     }
     
 
@@ -42,12 +43,13 @@ addTool({
         legistar_intent: { type: 'string' },
       },
     },
-    requestHandler(params) {
+    async requestHandler(params) {
       console.error("legister query???", params);
+      const data = await queryLegistar()
       return {
         content: [{
           type: 'text',
-          text: "this is a generic output for the legistar API",
+          text: data,
           mimeType: 'text/plain'
         }],
       };
