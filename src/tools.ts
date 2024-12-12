@@ -77,7 +77,7 @@ addTool({
       content: [{
         type: 'text',
         text: data,
-        mimeType: 'text/plain'
+        mimeType: 'application/json'
       }],
     };
   }
