@@ -21,3 +21,44 @@ export async function queryLegistar(): Promise<string> {
       return 'Unknown error occurred while querying Legistar';
     }
   }
+
+
+  export async function queryCouncilMembers(params?: {
+    top?: number;
+    skip?: number;
+    activeOnly?: boolean;
+  }): Promise<string> {
+    try {
+      // Build query parameters
+      const queryParams = new URLSearchParams({
+        token: API_KEY
+      });
+
+      // Add optional filters
+      if (params?.top) {
+        queryParams.append('$top', params.top.toString());
+      }
+      if (params?.skip) {
+        queryParams.append('$skip', params.skip.toString());
+      }
+      if (params?.activeOnly) {
+        queryParams.append('$filter', 'PersonActiveFlag eq 1');
+      }
+
+      // Query persons endpoint to get council members
+      const url = `${BASE_URL}/persons?${queryParams}`;
+  
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`API request failed: ${response.statusText}`);
+      }
+  
+      const data = await response.json();
+      return JSON.stringify(data, null, 2);
+    } catch (error) {
+      if (error instanceof Error) {
+        return `Error querying Legistar council members: ${error.message}`;
+      }
+      return 'Unknown error occurred while querying Legistar council members';
+    }
+  }
